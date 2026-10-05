@@ -114,25 +114,12 @@ In a host script, import `Video`, `render_mp4`, and `create_renderer` from
 ```jsx
 // Four explicit frames at two frames per second: a two-second video.
 <Video size={[640, 360]} fps={2} background={white}>
-  <Group>
-    <Line from={[0.2, 0.5]} to={[0.8, 0.5]} stroke={gray} />
-    <Circle pos={[0.2, 0.5]} width={px(60)} fill={blue} stroke={none} />
-    <Text pos={[0.5, 0.8]} font-size={px(24)}>Frame 1</Text>
-  </Group>
-  <Group>
-    <Line from={[0.2, 0.5]} to={[0.8, 0.5]} stroke={gray} />
-    <Circle pos={[0.4, 0.5]} width={px(60)} fill={blue} stroke={none} />
-    <Text pos={[0.5, 0.8]} font-size={px(24)}>Frame 2</Text>
-  </Group>
-  <Group>
-    <Line from={[0.2, 0.5]} to={[0.8, 0.5]} stroke={gray} />
-    <Circle pos={[0.6, 0.5]} width={px(60)} fill={blue} stroke={none} />
-    <Text pos={[0.5, 0.8]} font-size={px(24)}>Frame 3</Text>
-  </Group>
-  <Group>
-    <Line from={[0.2, 0.5]} to={[0.8, 0.5]} stroke={gray} />
-    <Circle pos={[0.8, 0.5]} width={px(60)} fill={blue} stroke={none} />
-    <Text pos={[0.5, 0.8]} font-size={px(24)}>Frame 4</Text>
-  </Group>
+  {linspace(0.2, 0.8, 4).map((x, i) =>
+    <Group font-size={px(24)}>
+      <Line from={[0.2, 0.5]} to={[0.8, 0.5]} />
+      <Circle pos={[x, 0.5]} width={em(2)} fill={blue} stroke={none} />
+      <Text pos={[0.5, 0.8]}>Frame {i+1}</Text>
+    </Group>
+  )}
 </Video>
 ```

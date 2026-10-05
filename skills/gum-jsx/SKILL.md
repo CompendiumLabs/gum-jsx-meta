@@ -274,7 +274,7 @@ directory and put a minimal `package.json` containing `{"private":true}` there.
 Run this command **from that directory**:
 
 ```sh
-npm install --save-exact --ignore-scripts @gum-jsx/cli@2.0.0
+npm install --save-exact --ignore-scripts gum-jsx@2.0.0
 ```
 
 If npm's default cache is not writable in a sandbox, set `npm_config_cache` to
@@ -282,15 +282,16 @@ a writable directory (such as a cache directory under the task's temporary
 directory) and retry the installation.
 
 The bundled package has no runtime package dependencies and needs no install
-scripts. Keep the generated lockfile, including the registry integrity metadata.
+scripts. Verify the installation with the installed `gum --version` command.
+Keep the generated lockfile, including the registry integrity metadata.
 Use the pinned version; if it is unavailable or integrity verification fails,
 stop and report the error. Invoke
-`node /absolute/tools-dir/node_modules/@gum-jsx/cli/dist/npm/cli.js`.
+`/absolute/tools-dir/node_modules/.bin/gum` (or `gum.cmd` on Windows).
 Retain the exact invocation for later renders. Run rendering commands from the caller's working directory so input
 files resolve there.
 
-Bun 1.4.2+ works equally well: install with `bun add --exact --ignore-scripts @gum-jsx/cli@2.0.0`
-and use `bun` in place of `node` in the invocation above.
+Bun 1.4.2+ works equally well: install with `bun add --exact --ignore-scripts gum-jsx@2.0.0`
+and run `bun /absolute/tools-dir/node_modules/.bin/gum`.
 
 This installation needs no global install, PATH or shell-profile changes, or
 changes to the user's project dependencies. Only install into the project when
@@ -304,9 +305,9 @@ for an environment with a supported runtime.
 
 The bundled npm CLI runs under Node.js 24+ with no runtime package dependencies.
 
-- **Project CLI:** install with `npm install --save-dev --save-exact --ignore-scripts @gum-jsx/cli@2.0.0`,
+- **Project CLI:** install with `npm install --save-dev --save-exact --ignore-scripts gum-jsx@2.0.0`,
   then use `./node_modules/.bin/gum` (or its Windows wrapper).
-- **Global CLI:** install with `npm install -g --ignore-scripts @gum-jsx/cli@2.0.0`, then use `gum`.
+- **Global CLI:** install with `npm install -g --ignore-scripts gum-jsx@2.0.0`, then use `gum`.
 - **Library integration:** source packages require Bun or a browser bundler.
   Add the libraries the host code needs, for example
   `npm install --save-exact --ignore-scripts @gum-jsx/core@2.0.0 @gum-jsx/math@2.0.0`.

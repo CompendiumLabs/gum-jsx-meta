@@ -10,7 +10,8 @@ ROOT=$(cd "$(dirname "$0")/.." && pwd)
 PORT=${PORT:-4873}
 [[ "$PORT" =~ ^[0-9]+$ ]] && (( PORT > 0 && PORT < 65536 )) || { echo 'Invalid PORT' >&2; exit 1; }
 REG="http://127.0.0.1:$PORT/"
-ORDER=(core math maps png pdf pptx mark react docs cli)
+ORDER=(gum-jsx-core gum-jsx-math gum-jsx-maps gum-jsx-png gum-jsx-pdf gum-jsx-mp4
+    gum-jsx-pptx gum-jsx-mark gum-jsx-react gum-jsx-docs gum-jsx-cli gum-jsx)
 for tool in bun node npm curl tar setsid; do
     command -v "$tool" >/dev/null || { echo "Required command: $tool" >&2; exit 1; }
 done
@@ -53,7 +54,7 @@ touch "$npm_config_userconfig" "$npm_config_globalconfig"
 
 say 'prepare publication workspace'
 (cd "$ROOT/gum-jsx-png" && runlog png-build.log bun run build)
-(cd "$ROOT/gum-jsx-cli" && runlog cli-build.log bun run build)
+(cd "$ROOT/gum-jsx" && runlog cli-build.log bun run build)
 (cd "$ROOT/gum-jsx-mark" && runlog mark-build.log bun run build)
 PUBLISH="$WORK/publish"
 mkdir -p "$PUBLISH"
@@ -61,33 +62,33 @@ cp "$ROOT/package.json" "$PUBLISH/package.json"
 # Keep the lockfile with the publication copy for reproducible local resolution.
 cp "$ROOT/bun.lock" "$PUBLISH/bun.lock"
 for pkg in "${ORDER[@]}"; do
-    mkdir -p "$PUBLISH/gum-jsx-$pkg"
-    tar -C "$ROOT/gum-jsx-$pkg" --exclude=.git --exclude=node_modules \
+    mkdir -p "$PUBLISH/$pkg"
+    tar -C "$ROOT/$pkg" --exclude=.git --exclude=node_modules \
         --exclude=dist --exclude=out --exclude=target --exclude=skills --exclude=.npmrc \
-        --exclude=.env --exclude='.env.*' -cf - . | tar -C "$PUBLISH/gum-jsx-$pkg" -xf -
+        --exclude=.env --exclude='.env.*' -cf - . | tar -C "$PUBLISH/$pkg" -xf -
 done
 cp -R "$ROOT/gum-jsx-png/dist" "$PUBLISH/gum-jsx-png/dist"
-mkdir -p "$PUBLISH/gum-jsx-cli/dist"
-cp -R "$ROOT/gum-jsx-cli/dist/npm" "$PUBLISH/gum-jsx-cli/dist/npm"
+mkdir -p "$PUBLISH/gum-jsx/dist"
+cp -R "$ROOT/gum-jsx/dist/npm" "$PUBLISH/gum-jsx/dist/npm"
 mkdir -p "$PUBLISH/gum-jsx-mark/dist"
 cp -R "$ROOT/gum-jsx-mark/dist/npm" "$PUBLISH/gum-jsx-mark/dist/npm"
 # Publishing from copies lets us force the local registry even when a package
 # gains a publishConfig.registry, without modifying any source manifests.
 VERSION=$(bun -e '
 const [directory, registry, ...packages] = process.argv.slice(1);
-let version;
+const version = (await Bun.file(`${directory}/gum-jsx/package.json`).json()).version;
 for (const pkg of packages) {
-  const file = Bun.file(`${directory}/gum-jsx-${pkg}/package.json`);
+  const file = Bun.file(`${directory}/${pkg}/package.json`);
   const manifest = await file.json();
-  version ??= manifest.version;
-  if (manifest.private || !version || manifest.version !== version || manifest.name !== `@gum-jsx/${pkg}`)
+  const name = pkg === "gum-jsx" ? pkg : `@gum-jsx/${pkg.slice(8)}`;
+  if (manifest.private || !manifest.version || manifest.name !== name)
     throw Error(`Invalid public release manifest: ${pkg}`);
   manifest.publishConfig = { ...manifest.publishConfig, registry, access: "public", tag: "rehearsal" };
   await Bun.write(file, JSON.stringify(manifest, null, 2));
 }
 const root = Bun.file(`${directory}/package.json`);
 const manifest = await root.json();
-manifest.workspaces = packages.map(pkg => `gum-jsx-${pkg}`);
+manifest.workspaces = packages;
 await Bun.write(root, JSON.stringify(manifest, null, 2));
 console.log(version);
 ' "$PUBLISH" "$REG" "${ORDER[@]}")
@@ -105,6 +106,9 @@ uplinks:
   npmjs:
     url: https://registry.npmjs.org/
 packages:
+  'gum-jsx':
+    access: \$all
+    publish: \$authenticated
   '@gum-jsx/*':
     access: \$all
     publish: \$authenticated
@@ -133,22 +137,28 @@ printf 'registry=%s\n//127.0.0.1:%s/:_authToken=%s\n' "$REG" "$PORT" "$TOKEN" > 
 cp "$WORK/.npmrc" "$PUBLISH/.npmrc"
 
 for pkg in "${ORDER[@]}"; do
-    say "publish @gum-jsx/$pkg@$VERSION locally"
+    spec=$(bun -e 'const pkg = await Bun.file(process.argv[1]).json(); console.log(`${pkg.name}@${pkg.version}`)' "$PUBLISH/$pkg/package.json")
+    say "publish $spec locally"
     # PNG, CLI, and Markdown were built above; the copies need no dev dependencies or lifecycle scripts.
-    (cd "$PUBLISH/gum-jsx-$pkg" && runlog "publish-$pkg.log" npm publish --ignore-scripts --access public --tag rehearsal --registry "$REG")
-    runlog "metadata-$pkg.log" npm view "@gum-jsx/$pkg@$VERSION" --json --registry "$REG"
+    (cd "$PUBLISH/$pkg" && runlog "publish-$pkg.log" npm publish --ignore-scripts --access public --tag rehearsal --registry "$REG")
+    runlog "metadata-$pkg.log" npm view "$spec" --json --registry "$REG"
     bun -e '
-const [file, name, version] = process.argv.slice(1);
+const [file, directory, pkg] = process.argv.slice(1);
+const { name, version } = await Bun.file(`${directory}/${pkg}/package.json`).json();
 const result = JSON.parse(await Bun.file(file).text());
 const metadata = Array.isArray(result) ? result[0] : result;
 if (metadata.version !== version) throw Error(`Published ${name} has version ${metadata.version}`);
 for (const [dependency, range] of Object.entries(metadata.dependencies ?? {})) {
   if (/^(workspace:|link:|file:)/.test(range))
     throw Error(`Published ${name} contains a local dependency: ${dependency}@${range}`);
-  if (dependency.startsWith("@gum-jsx/") && range !== version)
-    throw Error(`Published ${name} must pin ${dependency} to ${version}, got ${range}`);
+  if (dependency.startsWith("@gum-jsx/")) {
+    const path = `${directory}/gum-jsx-${dependency.slice(9)}/package.json`;
+    const expected = (await Bun.file(path).json()).version;
+    if (range !== expected)
+      throw Error(`Published ${name} must pin ${dependency} to ${expected}, got ${range}`);
+  }
 }
-' "$WORK/metadata-$pkg.log" "@gum-jsx/$pkg" "$VERSION"
+' "$WORK/metadata-$pkg.log" "$PUBLISH" "$pkg"
 done
 
 say 'install CLI into a fresh Bun project'
@@ -157,9 +167,9 @@ mkdir -p "$APP"
 cd "$APP"
 printf '{"name":"gum-rehearsal","private":true,"type":"module"}\n' > package.json
 cp "$WORK/.npmrc" .npmrc
-runlog bun-install.log bun install "@gum-jsx/cli@$VERSION" --ignore-scripts --registry "$REG"
+runlog bun-install.log bun install "gum-jsx@$VERSION" --ignore-scripts --registry "$REG"
 [ ! -d node_modules/canvas ] || fail 'default CLI install brought in canvas'
-[ -f node_modules/@gum-jsx/cli/dist/npm/cli.js ] || fail 'missing CLI bundle'
+[ -f node_modules/gum-jsx/dist/npm/cli.js ] || fail 'missing CLI bundle'
 [ ! -d node_modules/@gum-jsx/core ] || fail 'CLI installed separate library dependencies'
 for bin in gum; do
     [ -x "node_modules/.bin/$bin" ] || fail "missing executable $bin"
@@ -192,7 +202,7 @@ say 'install Markdown, React, and docs separately'
 # Read the supported peer ranges instead of pulling an unrelated latest React.
 REACT=$(bun -e 'console.log((await Bun.file(process.argv[1]).json()).peerDependencies.react)' "$PUBLISH/gum-jsx-react/package.json")
 REACT_DOM=$(bun -e 'console.log((await Bun.file(process.argv[1]).json()).peerDependencies["react-dom"])' "$PUBLISH/gum-jsx-react/package.json")
-EXTRA=("@gum-jsx/core@$VERSION" "@gum-jsx/math@$VERSION" "@gum-jsx/maps@$VERSION" "@gum-jsx/png@$VERSION" "@gum-jsx/pdf@$VERSION" "@gum-jsx/mark@$VERSION" "@gum-jsx/react@$VERSION" "@gum-jsx/docs@$VERSION" "react@$REACT" "react-dom@$REACT_DOM")
+EXTRA=("@gum-jsx/cli@$VERSION" "@gum-jsx/core@$VERSION" "@gum-jsx/math@$VERSION" "@gum-jsx/maps@$VERSION" "@gum-jsx/png@$VERSION" "@gum-jsx/pdf@$VERSION" "@gum-jsx/mark@$VERSION" "@gum-jsx/react@$VERSION" "@gum-jsx/docs@$VERSION" "react@$REACT" "react-dom@$REACT_DOM")
 runlog bun-extra.log bun add "${EXTRA[@]}" --registry "$REG"
 printf 'Hello $x^2$\n' > notes.md
 runlog gumd.log bun run --silent gumd notes.md
@@ -205,6 +215,7 @@ import { mathToSvg } from '@gum-jsx/math'
 import { GeoMap, world_countries, us_states } from '@gum-jsx/maps'
 import { render_png, render_pixels } from '@gum-jsx/png'
 import { render_pdf } from '@gum-jsx/pdf'
+import { create_cli, create_evaluator } from '@gum-jsx/cli'
 import { displayMarkdown } from '@gum-jsx/mark'
 import { getElements, getGuides, buildSkillFiles } from '@gum-jsx/docs'
 import { elementsCodeDir } from '@gum-jsx/docs/dirs'
@@ -221,6 +232,12 @@ for (const pkg of ['core', 'math', 'maps', 'png', 'pdf', 'mark', 'react', 'docs'
     assert.ok(!String(range).startsWith('workspace:'));
   assert.ok(await Bun.file(`${path}/LICENSE`).exists());
 }
+// The source library imports without executing the CLI or replacing the distribution's bin.
+assert.equal(create_cli(version).version(), version);
+assert.equal((await create_evaluator()).evaluate('return 42'), 42);
+const cli_manifest = await Bun.file('node_modules/@gum-jsx/cli/package.json').json();
+assert.equal(cli_manifest.bin, undefined);
+assert.ok(realpathSync('node_modules/.bin/gum').includes('/gum-jsx/'));
 assert.ok((await Bun.file('figure.svg').text()).includes('<svg'));
 assert.equal(Buffer.from(await Bun.file('figure.png').arrayBuffer()).toString('hex', 0, 8), '89504e470d0a1a0a');
 assert.ok((await Bun.file('figure.pdf').text()).startsWith('%PDF-'));
@@ -387,7 +404,7 @@ mkdir -p "$WORK/app-npm"
 cd "$WORK/app-npm"
 printf '{"name":"gum-rehearsal-npm","private":true}\n' > package.json
 cp "$WORK/.npmrc" .npmrc
-runlog npm-install.log npm install "@gum-jsx/cli@$VERSION" "${EXTRA[@]}" --ignore-scripts --registry "$REG" --no-audit --no-fund
+runlog npm-install.log npm install "gum-jsx@$VERSION" "${EXTRA[@]}" --ignore-scripts --registry "$REG" --no-audit --no-fund
 for bin in gum gumd gum-react; do
     [ -x "node_modules/.bin/$bin" ] || fail "npm did not link $bin"
 done
@@ -401,7 +418,7 @@ grep -q $'\033_G' "$WORK/npm-mark.log" || fail 'npm gumd image'
 
 say 'isolated global Bun installation'
 cd "$WORK"
-runlog global-install.log bun install -g "@gum-jsx/cli@$VERSION" "@gum-jsx/react@$VERSION" "react@$REACT" "react-dom@$REACT_DOM" --registry "$REG"
+runlog global-install.log bun install -g "gum-jsx@$VERSION" "@gum-jsx/react@$VERSION" "react@$REACT" "react-dom@$REACT_DOM" --registry "$REG"
 runlog global-svg.log "$WORK/global/bin/gum" "$APP/figure.jsx" -o "$WORK/global.svg"
 runlog global-pdf.log "$WORK/global/bin/gum" "$APP/figure.jsx" -o "$WORK/global.pdf"
 runlog global-react.log "$WORK/global/bin/gum-react" "$APP/comp.tsx" --size 100

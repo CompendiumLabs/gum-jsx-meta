@@ -8,7 +8,7 @@ Use Gum as a command-line tool, a TypeScript library, or through its browser
 editor and React bindings. JSX figures use ordinary JavaScript functions and data;
 they do not require React.
 
-[Start with the CLI](https://github.com/CompendiumLabs/gum-jsx-cli#readme) ·
+[Start with the CLI](gum-jsx/README.md) ·
 [Documentation and gallery](https://compendiumlabs.ai/gum)
 
 ## Get started
@@ -16,7 +16,7 @@ they do not require React.
 Use Node.js 24 or newer and install the bundled CLI:
 
 ```sh
-npm install -g @gum-jsx/cli
+npm install -g gum-jsx
 ```
 
 The CLI includes the core renderer, math, maps, and PNG/PDF/PPTX exporters. It
@@ -80,7 +80,7 @@ PNG and terminal rendering use tiny-skia WebAssembly without native addons or
 install scripts. Raster output uses outlined text; emoji without outlines and
 external SVG images are unsupported. PDF output preserves vector paths and embedded PNG images;
 text is outlined and is not searchable or selectable. See the
-[CLI](gum-jsx-cli/README.md), [PDF](gum-jsx-pdf/README.md), and
+[CLI](gum-jsx/README.md), [PDF](gum-jsx-pdf/README.md), and
 [PPTX](gum-jsx-pptx/README.md) references for format support and limits.
 
 **Browser editor.** From a [development checkout](#development), run `bun --filter @gum-jsx/edit dev`
@@ -132,7 +132,8 @@ Each package is a separate repository, developed together through Git submodules
 | [@gum-jsx/pptx](gum-jsx-pptx/README.md) | Native PowerPoint shapes and images from laid-out fragments. |
 | [@gum-jsx/react](gum-jsx-react/README.md) | React bindings, headless rendering, and the `gum-react` command. |
 | [@gum-jsx/mark](gum-jsx-mark/README.md) | Markdown terminal rendering with figures and math. |
-| [@gum-jsx/cli](gum-jsx-cli/README.md) | The `gum` command. |
+| [gum-jsx](gum-jsx/README.md) | The `gum` command, npm bundle, and standalone executables. |
+| [@gum-jsx/cli](gum-jsx-cli/README.md) | Command construction, evaluation, layout, and rendering APIs. |
 | [@gum-jsx/edit](gum-jsx-edit/README.md) | Browser editor and interactive documentation viewer. |
 | [@gum-jsx/docs](gum-jsx-docs/README.md) | Guides, element references, gallery sources, and skill generation. |
 
@@ -161,7 +162,7 @@ bun run perf          # Core, math, maps, and demos benchmarks, sequentially
 bun --filter @gum-jsx/edit build # Production browser editor and docs viewer
 bun run visual-test   # Searchable HTML report of rendered examples
 bun run rehearse      # Publish to a temporary local registry and check fresh installs
-bun run --cwd gum-jsx-cli test # Includes isolated npm CLI installation checks
+bun run --cwd gum-jsx test # Includes isolated npm CLI installation checks
 ```
 
 To work on one package, use its scripts, for example

@@ -215,7 +215,7 @@ embedding multiple generated SVGs in one HTML document, so clip definitions do
 not collide. Prefixes start with a letter or underscore and then contain
 letters, digits, underscores, dots, or hyphens. **Text** is emitted as paths.
 
-For PNG and terminal graphics, use gum-jsx-png and gum-jsx-cli through the
+For PNG and terminal graphics, install `gum-jsx` and use the
 [CLI](https://github.com/CompendiumLabs/gum-jsx-docs/blob/master/prompt/cli.md#render-with-the-cli). Those host concerns are separate from core layout. The runnable
 source below is a small diagram to feed through this pipeline, not a host script.
 

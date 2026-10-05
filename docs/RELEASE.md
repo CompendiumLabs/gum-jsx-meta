@@ -20,12 +20,11 @@ gh release create v2.0.0 dist/gum-jsx-skill.zip \
   --notes "Gum skill for v2.0.0"
 ```
 
-Gum standalone release commands (gum-jsx-cli):
+Gum standalone release commands (run from the `gum-jsx` package directory):
 
 ```sh
+bun run standalone:pack
 gh release create v2.0.0 dist/releases/v2.0.0/* \
-  --repo CompendiumLabs/gum-jsx-cli \
-  --target "$(git rev-parse HEAD)" \
   --title "Gum v2.0.0" \
   --latest \
   --notes "Standalone gum executables for macOS ARM64, macOS x64, Linux x64, and Windows x64."
@@ -44,7 +43,13 @@ Current submodule packages:
 7. `@gum-jsx/pptx`
 8. `@gum-jsx/react`
 9. `@gum-jsx/docs`
-10. `@gum-jsx/cli`
+10. `@gum-jsx/cli` (implementation library)
+11. `gum-jsx` (commands and executable distribution)
+
+Publish the source dependencies, including `@gum-jsx/mp4`, before
+`@gum-jsx/cli`. The `gum-jsx` distribution bundles its implementation and has no
+runtime npm dependencies. MP4 keeps its own `0.1.0` version; the rehearsal checks
+each dependency against its package manifest.
 
 Testing commands:
 

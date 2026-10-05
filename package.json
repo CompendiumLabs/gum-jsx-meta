@@ -1,5 +1,5 @@
 {
-  "name": "gum-jsx",
+  "name": "gum-jsx-workspace",
   "private": true,
   "workspaces": [
     "gum-jsx-core",
@@ -11,12 +11,13 @@
     "gum-jsx-react",
     "gum-jsx-mark",
     "gum-jsx-cli",
+    "gum-jsx",
     "gum-jsx-edit",
     "gum-jsx-docs",
     "gum-jsx-maps"
   ],
   "scripts": {
-    "build": "bun run --cwd gum-jsx-png build && bun run --cwd gum-jsx-cli build && bun run --cwd gum-jsx-mark build",
+    "build": "bun run --cwd gum-jsx-png build && bun run --cwd gum-jsx build && bun run --cwd gum-jsx-mark build",
     "plugin:build": "bun gum-jsx-docs/scripts/plugin-build.ts",
     "plugin:pack": "bun gum-jsx-docs/scripts/plugin-pack.ts",
     "skill:build": "bun gum-jsx-docs/scripts/skill-build.ts",

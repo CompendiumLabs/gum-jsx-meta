@@ -3,15 +3,16 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "gum-jsx",
+      "name": "gum-jsx-workspace",
     },
-    "gum-jsx-cli": {
-      "name": "@gum-jsx/cli",
+    "gum-jsx": {
+      "name": "gum-jsx",
       "version": "2.0.0",
       "bin": {
         "gum": "dist/npm/cli.js",
       },
       "devDependencies": {
+        "@gum-jsx/cli": "2.0.0",
         "@gum-jsx/core": "2.0.0",
         "@gum-jsx/maps": "2.0.0",
         "@gum-jsx/math": "2.0.0",
@@ -20,10 +21,28 @@
         "@gum-jsx/png": "2.0.0",
         "@gum-jsx/pptx": "2.0.0",
         "@types/bun": "latest",
-        "@types/papaparse": "^5.5.2",
         "commander": "^14.0.3",
         "fast-png": "^8.0.0",
+        "typescript": "^7",
+      },
+    },
+    "gum-jsx-cli": {
+      "name": "@gum-jsx/cli",
+      "version": "2.0.0",
+      "dependencies": {
+        "@gum-jsx/core": "2.0.0",
+        "@gum-jsx/maps": "2.0.0",
+        "@gum-jsx/math": "2.0.0",
+        "@gum-jsx/mp4": "0.1.0",
+        "@gum-jsx/pdf": "2.0.0",
+        "@gum-jsx/png": "2.0.0",
+        "@gum-jsx/pptx": "2.0.0",
+        "@types/papaparse": "^5.5.2",
+        "commander": "^14.0.3",
         "papaparse": "^5.7.0",
+      },
+      "devDependencies": {
+        "@types/bun": "latest",
         "typescript": "^7",
       },
     },
@@ -467,6 +486,8 @@
     "fsevents": ["fsevents@2.3.3", "", { "os": "darwin" }, "sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw=="],
 
     "graceful-fs": ["graceful-fs@4.2.11", "", {}, "sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ=="],
+
+    "gum-jsx": ["gum-jsx@workspace:gum-jsx"],
 
     "internmap": ["internmap@2.0.3", "", {}, "sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg=="],
 

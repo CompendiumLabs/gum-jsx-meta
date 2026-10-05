@@ -30,7 +30,7 @@ The SVG is retained as the vector master. Convert it to PNG from the top-level
 repository with librsvg:
 
 ```sh
-bun gum-jsx-cli/src/cli.ts plugins/gum-jsx/assets/logo_icon_dark.jsx -o plugins/gum-jsx/assets/logo_icon_dark.svg
+bun gum-jsx/src/cli.ts plugins/gum-jsx/assets/logo_icon_dark.jsx -o plugins/gum-jsx/assets/logo_icon_dark.svg
 ```
 
 Repack after regenerating the icon to include the new PNG in the release ZIP.
@@ -59,23 +59,23 @@ Use Node.js 24 or newer. In a dedicated writable tools directory with a minimal
 `package.json` containing `{"private":true}`, run:
 
 ```sh
-npm install --save-exact --ignore-scripts @gum-jsx/cli@2.0.0
+npm install --save-exact --ignore-scripts gum-jsx@2.0.0
 ```
 
-Invoke `node /absolute/tools-dir/node_modules/@gum-jsx/cli/dist/npm/cli.js`
+Invoke `/absolute/tools-dir/node_modules/.bin/gum` (or `gum.cmd` on Windows)
 and retain that invocation for rendering from the task's working directory. If npm's default cache is not writable, set `npm_config_cache` to a
 writable temporary directory and retry.
 
-Bun 1.4.2 or newer works equally well: use `bun add --exact --ignore-scripts @gum-jsx/cli@2.0.0`
-and invoke the CLI with `bun` in place of `node`.
+Bun 1.4.2 or newer works equally well: use `bun add --exact --ignore-scripts gum-jsx@2.0.0`
+and run `bun /absolute/tools-dir/node_modules/.bin/gum`.
 
 If neither Node.js 24+ nor Bun 1.4.2+ is available and no existing Gum renderer
 was found, the skill provides JSX source and npm installation and rendering
 instructions for an environment with a supported runtime.
 
-For project integration, use `npm install --save-dev --save-exact --ignore-scripts @gum-jsx/cli@2.0.0` and the
+For project integration, use `npm install --save-dev --save-exact --ignore-scripts gum-jsx@2.0.0` and the
 local `node_modules/.bin/gum` executable. For a global command, use
-`npm install -g --ignore-scripts @gum-jsx/cli@2.0.0`. Source library integration requires Bun or a
+`npm install -g --ignore-scripts gum-jsx@2.0.0`. Source library integration requires Bun or a
 browser bundler; see the skill's [rendering guide](skills/gum-jsx/references/guides/rendering.md).
 
 If you decline setup or your host cannot run commands, the skill can still

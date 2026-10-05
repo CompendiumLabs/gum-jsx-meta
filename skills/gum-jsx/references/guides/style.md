@@ -12,6 +12,8 @@ weights, padding, backgrounds, and borders do not inherit.
 | `font-style` | `"normal"` | "normal" or "italic" |
 | `line-height` | `em(1.2)` | Line box height, not glyph scaling |
 | `color` | Theme foreground (`black` in light) | **Text** color and default **Box** border color |
+| `halo-color` | `none` | Rounded outline behind ordinary text; inherits through containers and spans |
+| `halo-width` | `em(0.08)` | Visible outward halo extent; px is fixed, em/fractions follow the local font size; zero disables it |
 | `fill` | `"none"` | Shape fill |
 | `stroke` | Theme foreground (`black` in light) | Shape stroke |
 | `stroke-width` | `px(1)` | Shape stroke thickness |
@@ -24,6 +26,12 @@ weights, padding, backgrounds, and borders do not inherit.
 Use paint strings such as `"#317969"`, `"tomato"`, or `"none"`. **Text** uses
 color, not fill. For a **Box**'s own fill use background; setting fill on a **Box** instead
 changes the inherited shape paint.
+
+Text halos enlarge ink and overflow without changing line breaking, baselines,
+or label placement. Set `halo-color={white}` on a label or use scoped props such
+as `label-halo-color` and `title-halo-width`. All halos in a **Text** element paint
+beneath its foreground. They also work with live text, using glyph paths for the
+halo. Math and color emoji do not receive halos. See [Text](../elements/text.md#Text-halos).
 
 Semantic paints such as `"theme:accent"`, `"theme:muted"`, and `"theme:area"`
 resolve from the inherited palette during layout. Literal colors stay fixed

@@ -64,7 +64,7 @@ files; release ZIP attachments remain useful snapshots for separate distribution
   locally in a writable tools directory. If neither runtime is available, it
   uses a matching standalone release. Users who decline installation or cannot
   run commands can still receive JSX source and rendering instructions.
-- [x] **Use the stable CLI install path.** Install `@gum-jsx/cli` without a
+- [x] **Use the stable CLI install path.** Install `gum-jsx` without a
   version or dist-tag to follow npm's `latest` release. Local installs save the
   resolved version exactly. Publish the stable CLI before distributing the plugin.
 - [x] **Finish the public listing.** The manifest lists **Gum** by

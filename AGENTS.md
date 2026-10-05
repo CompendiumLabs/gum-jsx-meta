@@ -8,7 +8,8 @@ This is a Bun workspace. Each package is a separate Git repository included as a
 - `gum-jsx-pdf`: SVG-to-PDF rendering.
 - `gum-jsx-mp4`: SVG-to-MP4 rendering.
 - `gum-jsx-pptx`: SVG-to-PPTX rendering.
-- `gum-jsx-cli`: command-line interface.
+- `gum-jsx-cli`: command-line implementation library.
+- `gum-jsx`: command entry points, executable builds, and distribution.
 - `gum-jsx-react`: React bindings.
 - `gum-jsx-edit`: web editor.
 - `gum-jsx-docs`: documentation and runnable examples.

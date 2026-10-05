@@ -41,7 +41,7 @@ that result. The [rendering API](rendering.md) exposes each stage separately.
 
 ## Run the example
 
-With `@gum-jsx/cli` installed globally, save the example below as `hello.jsx`:
+With `gum-jsx` installed globally, save the example below as `hello.jsx`:
 
 ```sh
 gum hello.jsx

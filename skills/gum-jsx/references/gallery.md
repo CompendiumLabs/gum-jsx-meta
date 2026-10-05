@@ -72,6 +72,7 @@ Each entry includes its runnable JSX example.
 
 - [One paragraph, two widths](gallery/text.md#paragraph) — The custom parent draws outlines around the measured paragraph boxes.
 - [Punk Rock](gallery/text.md#punk_rock) — Three colored text frames form a tilted badge with rounded outer corners.
+- [Text halos](gallery/text.md#text_halos) — Rounded text halos keep labels readable over lines without moving the labels.
 - [Type, ink, and line boxes](gallery/text.md#typography) — The tight-leading sample puts 28px glyphs in a 12px line box.
 - [Typography card](gallery/text.md#typography_card) — A text-focused card combines IBM Plex Sans and Mono, mixed weights, inline styles, baseline alignment, and a short preformatted block.
 
