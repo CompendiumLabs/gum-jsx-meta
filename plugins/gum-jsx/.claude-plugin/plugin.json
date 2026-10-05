@@ -1,0 +1,21 @@
+{
+  "name": "gum-jsx",
+  "version": "2.0.0",
+  "description": "Create diagrams, plots, mathematical figures, maps, and slides with Gum.",
+  "author": {
+    "name": "Compendium Labs",
+    "url": "https://github.com/CompendiumLabs"
+  },
+  "homepage": "https://github.com/CompendiumLabs/gum-jsx",
+  "repository": "https://github.com/CompendiumLabs/gum-jsx",
+  "license": "MIT",
+  "keywords": [
+    "gum-jsx",
+    "diagrams",
+    "plots",
+    "math",
+    "maps",
+    "design",
+    "slides"
+  ]
+}
