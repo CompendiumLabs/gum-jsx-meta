@@ -34,3 +34,6 @@
 [submodule "gum-jsx-pptx"]
 	path = gum-jsx-pptx
 	url = git@github.com:CompendiumLabs/gum-jsx-pptx
+[submodule "gum-jsx"]
+	path = gum-jsx
+	url = git@github.com:CompendiumLabs/gum-jsx
