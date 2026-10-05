@@ -112,7 +112,7 @@ before fitting. Small figures inside math likewise need intrinsic dimensions,
 such as an em width plus aspect. An ordinary content-sized box can simply measure
 its children, including rotated bounds, without becoming a fixed canvas.
 
-See [math slides](../gallery/math.md#math_slides), [two columns](../gallery/layout.md#two_column), and
+See [math slides](../gallery/math.md#math_slides), [two columns](../gallery/layout.md#two_columns), and
 [Punk Rock](../gallery/text.md#punk_rock) for these variants.
 
 ## Fitting

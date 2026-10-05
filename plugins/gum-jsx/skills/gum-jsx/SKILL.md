@@ -197,7 +197,7 @@ runnable JSX example.
 - [Guides](references/guides.md): the language, units, sizing, styles, helpers,
   fonts, math setup, and host rendering APIs.
 - [Elements by category](references/elements.md): layout, geometry, plotting,
-  maps, networks, text, math, and special elements, including `PngImage`.
+  maps, networks, text, math, and external images, including `PngImage`.
 - [Gallery](references/gallery.md): complete figures and focused examples,
   grouped by category. Start from a close example when it fits the request.
 
@@ -231,7 +231,7 @@ Useful starting points:
   and [Shape Algebra](references/gallery/math.md#shape_algebra).
 - Complete compositions: [Transformer](references/gallery/networks.md#transformer),
   [Pendulum Physics](references/gallery/geometry.md#pendulum_physics), and
-  [Two Columns](references/gallery/layout.md#two_column).
+  [Two columns](references/gallery/layout.md#two_columns).
 - Host integration: [Rendering](references/guides/rendering.md),
   [Fonts](references/guides/fonts.md), and [Custom elements](references/guides/custom_elements.md).
 

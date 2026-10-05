@@ -13,7 +13,6 @@ Each entry includes its runnable JSX example.
 - [Baselines, packing, and stretch](gallery/layout.md#stack_alignment) — TextBox and TextCol carry the available width through the surrounding document.
 - [Growth bases](gallery/layout.md#stack_basis) — Compare stack growth when children have different flex bases.
 - [Flex limits and shrinkage](gallery/layout.md#stack_flex) — The outer TextBox and nested TextCol components supply a shared width without repeating width declarations.
-- [Two Columns](gallery/layout.md#two_column) — A damped-oscillation plot sits beside a paragraph and a short list containing inline math.
 - [Two columns](gallery/layout.md#two_columns) — A small figure and its explanation share a definite row width.
 - [UI Mockup](gallery/layout.md#ui_mockup) — Overlapping desktop-style windows combine a live plot, a fine background grid, and wrapped message text.
 
