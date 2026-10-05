@@ -1,10 +1,38 @@
 # Release Readiness
 
+## Queued npm beta: 2.1.0-beta.0
+
+All 12 public npm packages use `2.1.0-beta.0`, with exact internal dependency
+pins and `publishConfig.tag` set to `beta`. The workspace and editor stay private.
+No package has been published as part of preparing these manifests.
+
+After validation, publish each package from its own directory in this order:
+
+1. `@gum-jsx/core`
+2. `@gum-jsx/math`, `@gum-jsx/maps`, `@gum-jsx/png`, `@gum-jsx/pdf`, `@gum-jsx/pptx`
+3. `@gum-jsx/mp4`, `@gum-jsx/mark`, `@gum-jsx/react`, `@gum-jsx/docs`
+4. `@gum-jsx/cli`
+5. `gum-jsx`
+
+```sh
+npm publish --tag beta --access public
+```
+
+After publication, install `gum-jsx@beta`, or pin the exact candidate:
+
+```sh
+npm install -g gum-jsx@2.1.0-beta.0
+gum --version
+```
+
+The expected version is `2.1.0-beta.0`. Publishing with the `beta` tag keeps the
+stable `latest` channel unchanged. Plugin manifests have their own release version.
+
 # GitHub Releases
 
 Standalone GitHub release commands (run from the workspace root):
 
-Plugin release commands (top-level):
+Plugin release commands (top-level, versioned separately):
 
 ```sh
 gh release create v2.0.0 dist/gum-jsx-plugin.zip \
@@ -24,9 +52,9 @@ Gum standalone release commands (run from the `gum-jsx` package directory):
 
 ```sh
 bun run standalone:pack
-gh release create v2.0.0 dist/releases/v2.0.0/* \
-  --title "Gum v2.0.0" \
-  --latest \
+gh release create v2.1.0-beta.0 dist/releases/v2.1.0-beta.0/* \
+  --title "Gum v2.1.0-beta.0" \
+  --prerelease --latest=false \
   --notes "Standalone gum executables for macOS ARM64, macOS x64, Linux x64, and Windows x64."
 ```
 
@@ -41,10 +69,11 @@ Current submodule packages:
 5. `@gum-jsx/pdf`
 6. `@gum-jsx/mp4`
 7. `@gum-jsx/pptx`
-8. `@gum-jsx/react`
-9. `@gum-jsx/docs`
-10. `@gum-jsx/cli` (implementation library)
-11. `gum-jsx` (commands and executable distribution)
+8. `@gum-jsx/mark`
+9. `@gum-jsx/react`
+10. `@gum-jsx/docs`
+11. `@gum-jsx/cli` (implementation library)
+12. `gum-jsx` (commands and executable distribution)
 
 Publish the source dependencies, including `@gum-jsx/mp4`, before
 `@gum-jsx/cli`. The `gum-jsx` distribution bundles its implementation and has no
@@ -55,9 +84,9 @@ Testing commands:
 
 ```sh
 bun install --frozen-lockfile
+bun run build
 bun run test
 bun run typecheck
-bun run build
 bun run visual-report
 bun run rehearse
 ```
