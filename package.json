@@ -2,6 +2,7 @@
   "name": "gum-jsx-workspace",
   "private": true,
   "workspaces": [
+    "gum-jsx",
     "gum-jsx-core",
     "gum-jsx-math",
     "gum-jsx-png",
@@ -11,7 +12,6 @@
     "gum-jsx-react",
     "gum-jsx-mark",
     "gum-jsx-cli",
-    "gum-jsx",
     "gum-jsx-edit",
     "gum-jsx-docs",
     "gum-jsx-maps"

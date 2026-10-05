@@ -48,8 +48,8 @@ Current submodule packages:
 
 Publish the source dependencies, including `@gum-jsx/mp4`, before
 `@gum-jsx/cli`. The `gum-jsx` distribution bundles its implementation and has no
-runtime npm dependencies. MP4 keeps its own `0.1.0` version; the rehearsal checks
-each dependency against its package manifest.
+runtime npm dependencies. The rehearsal checks each dependency against its package
+manifest.
 
 Testing commands:
 
