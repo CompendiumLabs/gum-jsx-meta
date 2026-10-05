@@ -1,5 +1,7 @@
 # Gum plugin
 
+[Gum](https://github.com/CompendiumLabs/gum-jsx) — installation, quickstart, and user documentation.
+
 This plugin packages the Gum authoring skill generated from the maintained
 prompts and documentation in `gum-jsx-docs`. The root `plugin.json` uses the portable
 Agent Plugins layout, with OpenAI presentation settings under
@@ -8,7 +10,7 @@ The plugin does not configure an MCP server.
 
 ## Build and package
 
-From the top-level `gum-jsx` repository, run:
+From the top-level `gum-jsx-meta` workspace, run:
 
 ```sh
 bun run plugin:build
@@ -41,7 +43,7 @@ The top-level repository includes the `gum-jsx` marketplace catalog and
 the complete generated plugin. Testers can install it directly from GitHub:
 
 ```sh
-codex plugin marketplace add CompendiumLabs/gum-jsx
+codex plugin marketplace add CompendiumLabs/gum-jsx-meta
 codex plugin add gum-jsx@gum-jsx
 ```
 
@@ -53,34 +55,10 @@ the current project's local CLI. It uses the first command found. If none is fou
 download and follows the host approval flow, asking for setup approval when
 needed. New installs use Gum 2.0.0 in a writable task directory.
 
-### CLI installation
-
-Use Node.js 24 or newer. In a dedicated writable tools directory with a minimal
-`package.json` containing `{"private":true}`, run:
-
-```sh
-npm install --save-exact --ignore-scripts gum-jsx@2.0.0
-```
-
-Invoke `/absolute/tools-dir/node_modules/.bin/gum` (or `gum.cmd` on Windows)
-and retain that invocation for rendering from the task's working directory. If npm's default cache is not writable, set `npm_config_cache` to a
-writable temporary directory and retry.
-
-Bun 1.4.2 or newer works equally well: use `bun add --exact --ignore-scripts gum-jsx@2.0.0`
-and run `bun /absolute/tools-dir/node_modules/.bin/gum`.
-
-If neither Node.js 24+ nor Bun 1.4.2+ is available and no existing Gum renderer
-was found, the skill provides JSX source and npm installation and rendering
-instructions for an environment with a supported runtime.
-
-For project integration, use `npm install --save-dev --save-exact --ignore-scripts gum-jsx@2.0.0` and the
-local `node_modules/.bin/gum` executable. For a global command, use
-`npm install -g --ignore-scripts gum-jsx@2.0.0`. Source library integration requires Bun or a
-browser bundler; see the skill's [rendering guide](skills/gum-jsx/references/guides/rendering.md).
-
-If you decline setup or your host cannot run commands, the skill can still
-provide JSX source and rendering instructions and will state that rendering
-was not performed.
+Install the renderer using the [main Gum installation guide](https://github.com/CompendiumLabs/gum-jsx#install).
+The maintained [CLI setup prompt](../../gum-jsx-docs/prompt/cli.md) defines
+renderer discovery, pinned local installs, runtime requirements, and fallback
+behavior. Edit that source and rebuild the skill when changing setup.
 
 To test the package in ChatGPT, open Plugins, choose **Add plugin** →
 **Upload plugin**, select `dist/gum-jsx-plugin.zip`, and start a new Work chat.
