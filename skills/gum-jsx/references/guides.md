@@ -28,3 +28,9 @@ Each page includes its runnable JSX example.
 - [Random](guides/random.md) — Every evaluate(source, {seed?}) call starts its own random stream, with seed 42 by default.
 - [Rendering and embedding](guides/rendering.md) — Trace the path from source elements through layout fragments to SVG output.
 - [Vectors](guides/vectors.md) — Point and vector helpers are available in JSX and as named imports.
+
+## External
+
+- [loadCSV](guides/load_csv.md) — Read CSV rows with headers and configurable type conversion using loadCSV(path, options?).
+- [loadJSON](guides/load_json.md) — Read structured data and configuration from a local JSON file with loadJSON(path).
+- [loadPNG](guides/load_png.md) — Read a local PNG into an embedded data URL with loadPNG(path), then display it with PngImage.

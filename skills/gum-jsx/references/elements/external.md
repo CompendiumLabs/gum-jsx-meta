@@ -1,4 +1,4 @@
-# Special elements
+# External elements
 
 <a id="PngImage"></a>
 
@@ -31,6 +31,12 @@ add detail; its print resolution depends on its pixel count and displayed size.
 PDF export currently rejects RGB PNGs with only one or two pixels and a `tRNS`
 transparency key because of a decoder limitation. Convert these images to RGBA;
 ordinary RGBA PNGs, including transparent 1×1 images, are supported.
+
+In a CLI eval script, use [loadPNG](../guides/load_png.md):
+
+```jsx
+<PngImage data={loadPNG('./photo.png')} width={px(320)} />
+```
 
 To read a local file in a Bun host script:
 

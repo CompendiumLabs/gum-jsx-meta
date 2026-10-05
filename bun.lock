@@ -53,6 +53,7 @@
         "@gum-jsx/core": "2.0.0",
         "@gum-jsx/maps": "2.0.0",
         "@gum-jsx/math": "2.0.0",
+        "@gum-jsx/mp4": "0.1.0",
         "@types/bun": "latest",
         "mitata": "1.0.34",
         "typescript": "^7",

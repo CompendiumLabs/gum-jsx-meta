@@ -5,9 +5,9 @@
 ## Gum Rendering Core
 
 A circuit-board view of the bundled Gum CLI: Gum JSX, including TeX math,
-flows into a compact rendering engine and out to SVG, PNG, and PDF.
-The size callout describes the Gum 2.0 bundle: approximately 3 MB of code
-and 1.6 MB of fonts.
+flows into a compact rendering engine and out to SVG, PNG, MP4, PDF, and PPTX.
+The size callout describes the gzipped Gum 2.0 bundle: approximately 0.9 MB of code
+and 0.7 MB of fonts.
 
 [Stacks](../guides/stack.md) arrange the title, diagram, footer,
 and card contents. A [Group](../elements/layout.md#Group) supplies the local
@@ -49,8 +49,8 @@ const half = chip.size / 2
 
 const outputs = [
   { label: 'SVG', detail: 'Scalable vectors', color: mint, y: output.height / 2 },
-  { label: 'PNG', detail: 'Ready-to-use pixels', color: blue, y: area.height / 2 },
-  { label: 'PDF', detail: 'Print-ready pages', color: gold, y: area.height - output.height / 2 },
+  { label: 'PNG / MP4', detail: 'Ready-to-use pixels', color: blue, y: area.height / 2 },
+  { label: 'PDF / PPTX', detail: 'Print-ready pages', color: gold, y: area.height - output.height / 2 },
 ]
 
 const Trace = ({ points, color = mint, arrow = false }) => (
@@ -131,7 +131,7 @@ return (
             border-width={em(0.06)} border-radius={em(0.3)}
           >
             <VStack width="fill" height="fill" align="center" justify="center" gap={em(0.5)}>
-              <Text font-size={em(2.4)} font-weight="bold" color={mint}>gum</Text>
+              <Text font-size={em(2.4)} font-weight="bold" color={mint}>GUM</Text>
               <Text font-size={em(0.85)} font-weight="bold">RENDERING CORE</Text>
               <Text font-family={mono} font-size={em(0.9)} color={mint}>0.9 MB code</Text>
               <Text font-family={mono} font-size={em(0.9)} color={blue}>0.7 MB font</Text>

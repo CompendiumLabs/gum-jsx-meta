@@ -144,6 +144,10 @@ Each entry includes its runnable JSX example.
 - [VCenter](elements/math.md#VCenter) — Center an operand's logical height on the math axis.
 - [XArrow](elements/math.md#XArrow) — An extensible relation arrow with labels above and optionally below it.
 
-## Special
+## Video
 
-- [PngImage](elements/special.md#PngImage) — Embeds a PNG from a base64 data URL.
+- [Video](elements/video.md#Video) — Create an MP4 animation from frame children or a frame generator.
+
+## External
+
+- [PngImage](elements/external.md#PngImage) — Embeds a PNG from a base64 data URL.
