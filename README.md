@@ -20,10 +20,10 @@ Each package is a separate repository, developed together through Git submodules
 | [@gum-jsx/pptx](gum-jsx-pptx/README.md) | Native PowerPoint shapes and images from laid-out fragments. |
 | [@gum-jsx/react](gum-jsx-react/README.md) | React bindings, headless rendering, and the `gum-react` command. |
 | [@gum-jsx/mark](gum-jsx-mark/README.md) | Markdown terminal rendering with figures and math. |
-| [gum-jsx](gum-jsx/README.md) | The `gum` command, npm bundle, and standalone executables. |
 | [@gum-jsx/cli](gum-jsx-cli/README.md) | Command construction, evaluation, layout, and rendering APIs. |
 | [@gum-jsx/edit](gum-jsx-edit/README.md) | Browser editor and interactive documentation viewer. |
 | [@gum-jsx/docs](gum-jsx-docs/README.md) | Guides, element references, gallery sources, and skill generation. |
+| [gum-jsx](gum-jsx/README.md) | The `gum` command, npm bundle, and standalone executables. |
 
 ## Development
 
@@ -34,7 +34,6 @@ git clone https://github.com/CompendiumLabs/gum-jsx-meta.git
 cd gum-jsx-meta
 git -c url."https://github.com/".insteadOf=git@github.com: submodule update --init --recursive
 bun install
-bun --filter @gum-jsx/png build
 ```
 
 The submodule command uses HTTPS for the repository's SSH remotes, so a public
@@ -45,13 +44,17 @@ Run shared commands from the workspace root:
 ```sh
 bun run test                      # Every package's suite, sequentially
 bun run typecheck                 # TypeScript checks across all packages
-bun run build                     # Build PNG assets and the Gum/Markdown command bundles
+bun run build                     # Rebuild PNG WASM, MP4 WASM, then bundle gum-jsx
 bun run perf                      # Core, math, maps, and demos benchmarks, sequentially
 bun --filter @gum-jsx/edit build  # Production browser editor and docs viewer
 bun run visual-test               # Searchable HTML report of rendered examples
 bun run rehearse                  # Publish to a temporary local registry and check fresh installs
 bun run --cwd gum-jsx test        # Includes isolated npm CLI installation checks
 ```
+
+The workspace build requires Rust with the `wasm32-unknown-unknown` target and
+Clang with WASM support. Run `bun run --cwd gum-jsx build` to bundle the command
+using the checked-in WASM artifacts.
 
 To work on one package, use its scripts, for example
 `bun --filter @gum-jsx/core test`. Package READMEs cover additional checks and

@@ -53,7 +53,6 @@ export npm_config_registry="$REG"
 touch "$npm_config_userconfig" "$npm_config_globalconfig"
 
 say 'prepare publication workspace'
-(cd "$ROOT/gum-jsx-png" && runlog png-build.log bun run build)
 (cd "$ROOT/gum-jsx" && runlog cli-build.log bun run build)
 (cd "$ROOT/gum-jsx-mark" && runlog mark-build.log bun run build)
 PUBLISH="$WORK/publish"
@@ -67,7 +66,6 @@ for pkg in "${ORDER[@]}"; do
         --exclude=dist --exclude=out --exclude=target --exclude=skills --exclude=.npmrc \
         --exclude=.env --exclude='.env.*' -cf - . | tar -C "$PUBLISH/$pkg" -xf -
 done
-cp -R "$ROOT/gum-jsx-png/dist" "$PUBLISH/gum-jsx-png/dist"
 mkdir -p "$PUBLISH/gum-jsx/dist"
 cp -R "$ROOT/gum-jsx/dist/npm" "$PUBLISH/gum-jsx/dist/npm"
 mkdir -p "$PUBLISH/gum-jsx-mark/dist"
@@ -139,7 +137,7 @@ cp "$WORK/.npmrc" "$PUBLISH/.npmrc"
 for pkg in "${ORDER[@]}"; do
     spec=$(bun -e 'const pkg = await Bun.file(process.argv[1]).json(); console.log(`${pkg.name}@${pkg.version}`)' "$PUBLISH/$pkg/package.json")
     say "publish $spec locally"
-    # PNG, CLI, and Markdown were built above; the copies need no dev dependencies or lifecycle scripts.
+    # CLI and Markdown were built above; libraries publish source without lifecycle scripts.
     (cd "$PUBLISH/$pkg" && runlog "publish-$pkg.log" npm publish --ignore-scripts --access public --tag rehearsal --registry "$REG")
     runlog "metadata-$pkg.log" npm view "$spec" --json --registry "$REG"
     bun -e '
