@@ -219,7 +219,7 @@ the same projection, rotation, clipping, and fitted extent as the geography,
 leaving the area outside the projection transparent. An orthographic globe gets
 a circular background; bounds fitting crops it to the projected geographic box.
 Albers USA uses the composite projection's clip regions. Background colors can
-also use theme paints such as `"theme:area"`; the default is `none`.
+also use theme paints such as `"theme:accent"`; the default is `none`.
 
 This is a backdrop for the supplied geometry: gaps and polygon holes show the
 background, but lakes need to be represented as holes or omitted areas in the

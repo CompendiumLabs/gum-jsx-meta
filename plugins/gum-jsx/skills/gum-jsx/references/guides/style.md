@@ -33,7 +33,7 @@ as `label-halo-color` and `title-halo-width`. All halos in a **Text** element pa
 beneath its foreground. They also work with live text, using glyph paths for the
 halo. Math and color emoji do not receive halos. See [Text](../elements/text.md#Text-halos).
 
-Semantic paints such as `"theme:accent"`, `"theme:muted"`, and `"theme:area"`
+Semantic paints such as `"theme:accent"`, `"theme:muted"`, and `"theme:accent"`
 resolve from the inherited palette during layout. Literal colors stay fixed
 when the theme changes.
 

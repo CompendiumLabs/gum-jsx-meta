@@ -1095,7 +1095,7 @@ plot's width or height keeps them the same size. Label-specific font overrides
 leave axis geometry unchanged. Use `axis-stroke-width`, `tick-stroke-width`, or
 `grid-stroke-width` with `px(...)` for fixed thicknesses.
 Margins come from measured axis overflow and title sizes.
-Text uses `theme:text`, axes use `theme:muted`, and grid lines use `theme:grid`.
+Text uses `theme:text`, axes use `theme:muted`, and grid lines use `theme:neutral`.
 These paints follow the inherited [theme](../guides/themes.md).
 Title and x title wrap at the usable width. Explicit margin adds space to those
 measurements. The fragment's content rectangle identifies the data area.

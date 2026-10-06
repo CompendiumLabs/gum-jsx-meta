@@ -264,7 +264,7 @@ with accessible labels, not as selectable native text.
       <Text font-size={em(1.5)} font-family={mono} color={red}>0123</Text>
       <Text font-style="italic" color={blue}>one shared baseline</Text>
     </TextRow>
-    <TextBox font-family={mono} font-size={em(0.8)} line-height={em(1.5)} text-whitespace="pre" background={lightgray} padding={em(0.5)} border-radius={em(0.3)}>
+    <TextBox font-family={mono} font-size={em(0.8)} line-height={em(1.5)} text-whitespace="pre" background="theme:neutral" padding={em(0.5)} border-radius={em(0.3)}>
       measure real glyph metrics
       wrap at the allocated width
       output plain SVG paths
