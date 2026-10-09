@@ -227,7 +227,7 @@ There is real inconsistency in the public API today:
 | Geometry inside a coordinate frame | Coordinate units |
 | Border width and corner radii | Stroke units |
 
-In particular, the last category is not simply output pixels. `Svg` establishes a stroke unit from rendered size divided by `unit_size`; that unit scales with the image. Meanwhile, the em offer is established before the resulting figure is fitted to the output size. [SVG sizing and units](../elems/core.ts)
+In particular, the last category is not simply output pixels. `Page` establishes a stroke unit from rendered size divided by `unit_size`; that unit scales with the image. Meanwhile, the em offer is established before the resulting figure is fitted to the output size. [SVG sizing and units](../elems/core.ts)
 
 Explicit suffixes would make many examples easier to read. There are three reasonable policies:
 
