@@ -17,7 +17,7 @@
     "gum-jsx-maps"
   ],
   "scripts": {
-    "build": "bun run --cwd gum-jsx-png build && bun run --cwd gum-jsx-mp4 build && bun run --cwd gum-jsx build",
+    "build": "bun run --cwd gum-jsx-png build && bun run --cwd gum-jsx-mp4 build && bun run --cwd gum-jsx build && bun run --cwd gum-jsx-mark build",
     "plugin:build": "bun gum-jsx-docs/scripts/plugin-build.ts",
     "plugin:pack": "bun gum-jsx-docs/scripts/plugin-pack.ts",
     "skill:build": "bun gum-jsx-docs/scripts/skill-build.ts",
