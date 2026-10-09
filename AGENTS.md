@@ -22,6 +22,12 @@ root, `bun run test` runs up to four package suites concurrently and reports com
 check counts. Set `GUM_TEST_JOBS` to change the package concurrency (use `1` for a
 serial run). Use `bun run typecheck` for the separate TypeScript checks.
 
+# Testing policy
+
+Only add tests when strictly necessary to verify that a particular core feature
+works. Never add regression tests. Most edits will not require new tests; use
+existing tests to verify changes whenever possible.
+
 # Examples
 
 Keep JSX examples readable with indented, multiline nested elements, following
@@ -53,7 +59,6 @@ special cases, something has probably gone wrong. Step back and rethink it.
 5. Have comments every few lines describing what is being done. Have short comments at the top of functions describing their purpose.
 6. For complex algorithms, you can have large multi-line block before the function elaborating the details.
 7. Most files should follow the rough structure: imports, types, utility functions, class definitions, exports.
-8. Testing is often good, but you don't have to write a test for everything.
 
 # Related Projects
 
