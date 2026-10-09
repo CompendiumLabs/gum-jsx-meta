@@ -1,10 +1,10 @@
 # Release Readiness
 
-## Queued npm beta: 2.1.0-beta.0
+## Queued npm beta: 2.1.0-beta.1
 
-All 12 public npm packages use `2.1.0-beta.0`, with exact internal dependency
+All 12 public npm packages use `2.1.0-beta.1`, with exact internal dependency
 pins and `publishConfig.tag` set to `beta`. The workspace and editor stay private.
-No package has been published as part of preparing these manifests.
+No package has been published to the public npm registry as part of this preparation.
 
 After validation, publish each package from its own directory in this order:
 
@@ -21,39 +21,48 @@ npm publish --tag beta --access public
 After publication, install `gum-jsx@beta`, or pin the exact candidate:
 
 ```sh
-npm install -g gum-jsx@2.1.0-beta.0
+npm install -g gum-jsx@2.1.0-beta.1
 gum --version
 ```
 
-The expected version is `2.1.0-beta.0`. Publishing with the `beta` tag keeps the
+The expected version is `2.1.0-beta.1`. Publishing with the `beta` tag keeps the
 stable `latest` channel unchanged. Plugin manifests have their own release version.
+
+## Changes to call out for beta.1
+
+- Replace `<Svg>` with `<Page>` in JSX and `Svg` with `Page` in library code.
+  `Document` holds ordered pages with shared defaults; PDF and PPTX export all
+  pages, while SVG and PNG need `--page` when more than one page is present.
+- Select text and math families with the inherited `font-family` and `math-font`
+  props. The CLI loads custom faces with `--font`; the former `--default-font`
+  and `--math-font` flags have been removed.
+- Theme palettes use `neutral` instead of `grid` and `accent` instead of `area`.
+- KaTeX is pinned to `0.18.2`, addressing
+  [GHSA-238p-pmpm-9mq7](https://github.com/advisories/GHSA-238p-pmpm-9mq7).
+  The editor build resolves `source-map-js` to `1.2.2`, addressing
+  [GHSA-68fv-2mgg-jv7q](https://github.com/advisories/GHSA-68fv-2mgg-jv7q).
 
 # GitHub Releases
 
-Standalone GitHub release commands (run from the workspace root):
-
-Plugin release commands (top-level, versioned separately):
+Build the plugin and standalone skill from the workspace root:
 
 ```sh
-gh release create v2.0.0 dist/gum-jsx-plugin.zip \
-  --title "Gum Plugin v2.0.0" \
-  --notes "Gum plugin for v2.0.0"
+bun run plugin:pack
+bun run skill:pack
 ```
 
-Skill release commands (gum-jsx-docs):
-
-```sh
-gh release create v2.0.0 dist/gum-jsx-skill.zip \
-  --title "Gum Skill v2.0.0" \
-  --notes "Gum skill for v2.0.0"
-```
+Both artifacts belong to the `gum-jsx` repository: the plugin ZIP is
+`gum-jsx/dist/gum-jsx-plugin.zip`, and the skill ZIP is
+`gum-jsx/skills/gum-jsx-skill.zip`. Commit regenerated plugin and standalone skills in `gum-jsx`
+so marketplace installs receive the same documentation as the release archive.
 
 Gum standalone release commands (run from the `gum-jsx` package directory):
 
 ```sh
 bun run standalone:pack
-gh release create v2.1.0-beta.0 dist/releases/v2.1.0-beta.0/* \
-  --title "Gum v2.1.0-beta.0" \
+gh release create v2.1.0-beta.1 dist/releases/v2.1.0-beta.1/* \
+  dist/gum-jsx-plugin.zip skills/gum-jsx-skill.zip \
+  --title "Gum v2.1.0-beta.1" \
   --prerelease --latest=false \
   --notes "Standalone gum executables for macOS ARM64, macOS x64, Linux x64, and Windows x64."
 ```
@@ -96,3 +105,27 @@ for Verdaccio and external dependencies. Set `GUM_CHROME` if Chromium is not on
 PATH. `KEEP=1 PORT=4874 bun run rehearse` retains artifacts and selects a local
 port. All package publishes target the temporary loopback registry; personal npm
 configuration and global installations are unchanged.
+
+## Validation: 2026-10-09
+
+Validated on Linux with Bun `1.4.2`, Node `26.9.0`, and the official Node `24.0.0`
+binary for minimum-runtime CLI checks:
+
+- Frozen workspace installation, all 13 package type checks, workspace builds,
+  and the production editor build passed.
+- All 1,025 checks passed across 13 packages, with no skips or todos. The core
+  and math suites also passed with `GUM_FREEZE=0`; MP4's three Rust tests passed.
+- All 195 visual previews passed, including each Document page. Their SVG output
+  was unchanged by the KaTeX upgrade; font assets and metric data were identical.
+- The beta.1 local-registry rehearsal passed: fresh npm/Bun and isolated global
+  installs, strict consumer types, browser bundles, and Chromium rendering.
+- Installed CLI tests passed on Node `24.0.0`, including rendering parity with
+  Bun and the Linux release executable. `bun audit --json` returned `{}`.
+- All four standalone archives, checksums, plugin ZIP, and standalone skill ZIP
+  were rebuilt. The Linux executable reports `2.1.0-beta.1` and renders correctly.
+
+Before publishing, smoke-test the archives on native macOS and Windows hosts;
+those executables were cross-compiled here but could not be run on Linux. The
+editor still emits Vite's advisory about chunks larger than 500 kB; its production
+build succeeds. Commit and push the package changes before recording the updated
+workspace submodule pointers, then publish in the order above.

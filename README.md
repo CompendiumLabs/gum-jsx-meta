@@ -14,6 +14,7 @@ Each package is a separate repository, developed together through Git submodules
 | --- | --- |
 | [@gum-jsx/core](gum-jsx-core/README.md) | JSX evaluation, layout, shapes, text, plots, networks, and SVG output. |
 | [@gum-jsx/math](gum-jsx-math/README.md) | TeX parsing, math layout, and standalone formula exports. |
+| [@gum-jsx/maps](gum-jsx-maps/README.md) | Geographic maps, projections, and bundled world and US atlases. |
 | [@gum-jsx/png](gum-jsx-png/README.md) | Fragment rasterization to PNG or RGBA through WebAssembly. |
 | [@gum-jsx/mp4](gum-jsx-mp4/README.md) | Video frames, timing helpers, and the H.264/MP4 encoder. |
 | [@gum-jsx/pdf](gum-jsx-pdf/README.md) | Vector PDF export from laid-out fragments. |
@@ -47,7 +48,7 @@ bun run typecheck                 # TypeScript checks across all packages
 bun run build                     # Rebuild PNG WASM, MP4 WASM, then bundle gum-jsx
 bun run perf                      # Core, math, maps, and demos benchmarks, sequentially
 bun --filter @gum-jsx/edit build  # Production browser editor and docs viewer
-bun run visual-test               # Searchable HTML report of rendered examples
+bun run visual-report             # Searchable HTML report of rendered examples
 bun run rehearse                  # Publish to a temporary local registry and check fresh installs
 bun run --cwd gum-jsx test        # Includes isolated npm CLI installation checks
 ```
