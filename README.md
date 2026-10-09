@@ -42,7 +42,7 @@ checkout does not require a GitHub SSH key.
 Run shared commands from the workspace root:
 
 ```sh
-bun run test                      # Every package's suite, sequentially
+bun run test                      # Every package's suite, four at a time, with totals
 bun run typecheck                 # TypeScript checks across all packages
 bun run build                     # Rebuild PNG WASM, MP4 WASM, then bundle gum-jsx
 bun run perf                      # Core, math, maps, and demos benchmarks, sequentially
@@ -51,6 +51,16 @@ bun run visual-test               # Searchable HTML report of rendered examples
 bun run rehearse                  # Publish to a temporary local registry and check fresh installs
 bun run --cwd gum-jsx test        # Includes isolated npm CLI installation checks
 ```
+
+Tests print per-package results and a grand total, including nested npm-package
+tests and the assertion scripts' `ok -` checks. Individual assertions are not
+counted separately. All packages finish even if one fails; the command then exits
+nonzero and prints the failed packages' logs. Full logs for every package are saved
+in the temporary directory shown by the runner. A script that exits nonzero without
+a failure count contributes one failed check.
+
+Set `GUM_TEST_JOBS=8 bun run test` to run up to eight packages at once, or use `1`
+for a serial run. The default is four, capped by the available CPU count.
 
 The workspace build requires Rust with the `wasm32-unknown-unknown` target and
 Clang with WASM support. Run `bun run --cwd gum-jsx build` to bundle the command

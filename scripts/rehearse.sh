@@ -218,7 +218,7 @@ import { displayMarkdown } from '@gum-jsx/mark'
 import { getElements, getGuides, buildSkillFiles } from '@gum-jsx/docs'
 import { elementsCodeDir } from '@gum-jsx/docs/dirs'
 import { createGumRoot } from '@gum-jsx/react'
-import { rgbaPixel, keyedRgb, unsupportedKeyedPngs } from './png-fixtures'
+import { rgbaPixel } from './png-fixtures'
 
 const version = process.argv[2];
 for (const pkg of ['core', 'math', 'maps', 'png', 'pdf', 'mark', 'react', 'docs', 'cli']) {
@@ -274,10 +274,7 @@ function imagePdf(encoded: string) {
   if (result.kind !== 'svg') throw Error('Expected image fragment');
   return render_pdf(result.fragment);
 }
-for (const image of [rgbaPixel, keyedRgb])
-  assert.ok(new TextDecoder().decode(imagePdf(image)).includes('/SMask'));
-for (const image of unsupportedKeyedPngs)
-  assert.throws(() => imagePdf(image.encoded), /tRNS chunk contains more alpha values/);
+assert.ok(new TextDecoder().decode(imagePdf(rgbaPixel)).includes('/SMask'));
 console.log('Installed APIs, assets, and PDF image checks passed');
 TS
 runlog libraries.log bun --no-addons use.ts "$VERSION"

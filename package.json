@@ -24,7 +24,7 @@
     "skill:pack": "bun gum-jsx-docs/scripts/skill-pack.ts",
     "visual-report": "bun --filter @gum-jsx/cli visual-report",
     "typecheck": "bun run --workspaces typecheck",
-    "test": "bun run --workspaces test",
+    "test": "bun --no-orphans test/run.ts",
     "perf": "bun test/perf.ts",
     "rehearse": "bash scripts/rehearse.sh"
   }

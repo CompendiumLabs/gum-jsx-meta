@@ -18,8 +18,9 @@ Run `bun install` from the top level. The root `package.json` provides shared co
 
 Every package exposes `bun run test`. Keep tests and test runners in its `test/`
 directory; docs examples stay in their existing collections. From the workspace
-root, `bun run test` runs every package's suite sequentially. Use `bun run typecheck`
-for the separate TypeScript checks.
+root, `bun run test` runs up to four package suites concurrently and reports combined
+check counts. Set `GUM_TEST_JOBS` to change the package concurrency (use `1` for a
+serial run). Use `bun run typecheck` for the separate TypeScript checks.
 
 # Examples
 
