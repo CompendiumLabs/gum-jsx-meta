@@ -64,6 +64,11 @@ The [release checklist](docs/RELEASE.md) covers packaging and publication checks
 
 ### Documentation and agent assets
 
+The installed CLI is self-documenting: `gum docs` introduces the language and
+workflow, and `gum docs search`, `get`, `list`, and `example` expose the local
+reference corpus. npm and standalone builds embed a fresh catalog from
+`gum-jsx-docs`; no separate documentation install is needed.
+
 Edit guides and runnable examples in `gum-jsx-docs`, and edit agent instructions
 in `gum-jsx-docs/prompt`. Generate the distributable assets from the workspace root:
 
@@ -75,7 +80,7 @@ bun run skill:pack
 ```
 
 See the [documentation package](gum-jsx-docs/README.md) for content conventions
-and the [plugin README](plugins/gum-jsx/README.md) for packaging and installation
+and the [plugin README](gum-jsx/plugins/gum-jsx/README.md) for packaging and installation
 tests. Run `bun --filter @gum-jsx/edit dev` to preview the editor locally.
 
 ### Performance
