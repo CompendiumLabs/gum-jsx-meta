@@ -1,9 +1,9 @@
 # Release Readiness
 
-## Queued npm beta: 2.1.0-beta.1
+## Queued npm release: 2.1.0
 
-All 12 public npm packages use `2.1.0-beta.1`, with exact internal dependency
-pins and `publishConfig.tag` set to `beta`. The workspace and editor stay private.
+All 12 public npm packages use `2.1.0`, with exact internal dependency
+pins and `publishConfig.tag` set to `latest`. The workspace and editor stay private.
 No package has been published to the public npm registry as part of this preparation.
 
 After validation, publish each package from its own directory in this order:
@@ -15,20 +15,20 @@ After validation, publish each package from its own directory in this order:
 5. `gum-jsx`
 
 ```sh
-npm publish --tag beta --access public
+npm publish --tag latest --access public
 ```
 
-After publication, install `gum-jsx@beta`, or pin the exact candidate:
+After publication, install `gum-jsx@latest`, or pin the exact release:
 
 ```sh
-npm install -g gum-jsx@2.1.0-beta.1
+npm install -g gum-jsx@2.1.0
 gum --version
 ```
 
-The expected version is `2.1.0-beta.1`. Publishing with the `beta` tag keeps the
-stable `latest` channel unchanged. Plugin manifests have their own release version.
+The expected version is `2.1.0`. Publishing with the `latest` tag updates the
+stable channel. Plugin manifests have their own release version.
 
-## Changes to call out for beta.1
+## Changes to call out for 2.1.0
 
 - Replace `<Svg>` with `<Page>` in JSX and `Svg` with `Page` in library code.
   `Document` holds ordered pages with shared defaults; PDF and PPTX export all
@@ -37,6 +37,10 @@ stable `latest` channel unchanged. Plugin manifests have their own release versi
   props. The CLI loads custom faces with `--font`; the former `--default-font`
   and `--math-font` flags have been removed.
 - Theme palettes use `neutral` instead of `grid` and `accent` instead of `area`.
+- `Slide` extends `Page`; components adopting either through `define_component`
+  retain viewport behavior and work directly inside `Document`.
+- React rendering propagates uncaught component errors, schedules hook updates,
+  and applies changing `<Gum>` output options without remounting children.
 - KaTeX is pinned to `0.18.2`, addressing
   [GHSA-238p-pmpm-9mq7](https://github.com/advisories/GHSA-238p-pmpm-9mq7).
   The editor build resolves `source-map-js` to `1.2.2`, addressing
@@ -60,10 +64,10 @@ Gum standalone release commands (run from the `gum-jsx` package directory):
 
 ```sh
 bun run standalone:pack
-gh release create v2.1.0-beta.1 dist/releases/v2.1.0-beta.1/* \
+gh release create v2.1.0 dist/releases/v2.1.0/* \
   dist/gum-jsx-plugin.zip skills/gum-jsx-skill.zip \
-  --title "Gum v2.1.0-beta.1" \
-  --prerelease --latest=false \
+  --title "Gum v2.1.0" \
+  --latest \
   --notes "Standalone gum executables for macOS ARM64, macOS x64, Linux x64, and Windows x64."
 ```
 
@@ -106,7 +110,7 @@ PATH. `KEEP=1 PORT=4874 bun run rehearse` retains artifacts and selects a local
 port. All package publishes target the temporary loopback registry; personal npm
 configuration and global installations are unchanged.
 
-## Validation: 2026-10-09
+## Beta.1 validation: 2026-10-09
 
 Validated on Linux with Bun `1.4.2`, Node `26.9.0`, and the official Node `24.0.0`
 binary for minimum-runtime CLI checks:
@@ -124,8 +128,21 @@ binary for minimum-runtime CLI checks:
 - All four standalone archives, checksums, plugin ZIP, and standalone skill ZIP
   were rebuilt. The Linux executable reports `2.1.0-beta.1` and renders correctly.
 
-Before publishing, smoke-test the archives on native macOS and Windows hosts;
-those executables were cross-compiled here but could not be run on Linux. The
-editor still emits Vite's advisory about chunks larger than 500 kB; its production
+Native macOS and Windows testing of `2.1.0-beta.1` also passed, confirmed by Doug
+on 2026-10-09.
+
+## Stable release validation: 2026-10-09
+
+- All 12 public package versions and internal dependency pins are `2.1.0`, with
+  the `latest` publish tag. Frozen workspace installation passed.
+- Workspace builds, all 1,026 checks across 13 packages, and all 13 package type
+  checks passed after promotion.
+- Plugin and standalone skill archives were regenerated from the current docs.
+  All four standalone release archives were rebuilt and their checksums verified.
+- The npm CLI and Linux standalone executable report `2.1.0` and produce
+  identical SVG output for a Document containing a `define_component` slide.
+- PPTX fragment clipping is deferred to the next release in `TODO.md`.
+
+The editor still emits Vite's advisory about chunks larger than 500 kB; its production
 build succeeds. Commit and push the package changes before recording the updated
 workspace submodule pointers, then publish in the order above.
