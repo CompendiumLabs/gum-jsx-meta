@@ -13,11 +13,25 @@ React, core, and Maps package checks verify the new behavior.
 
 Phase 0 has a [small browser example](../gum-jsx-react/example/README.md) and
 [initial headless measurements](../gum-jsx-react/test/results/retention.md).
-It uses deterministic synthetic tracks over offline geography. The production
-bundle builds and the scene has been rasterized and visually checked. Browser
-interaction/paint measurements, a sustained browser run, and real Deadlift trace
-fixtures remain baseline follow-ups. The SVG string backend remains in use;
-retained DOM rendering begins in phase 2.
+It uses deterministic synthetic tracks over offline geography. The browser scene has been exercised with selection, keyboard movement and dragging
+during playback. It now offers retained DOM and string-baseline backends. Production
+paint/allocation measurements, a sustained browser run, and real Deadlift trace
+fixtures remain baseline follow-ups.
+
+Phases 2 and 3 are implemented in the React package: committed snapshot
+subscriptions, retained React SVG output for all drawing kinds, stable clips,
+weak path caching, live-font registration, typed events and occurrence handles.
+Core carries `source_key` ownership and optional placement `key` metadata; shared
+SVG geometry helpers live in `@gum-jsx/core/output`. Explicit keys distinguish
+reordered placements of one fragment. Fitting keeps its placement even at identity.
+
+The public interaction surface uses React SVG handlers, host-only accessibility
+props, `local_point`, and `domRef` callbacks with per-occurrence cleanup. Inline
+spans and generated batch items are not independently interactive. Browser
+contracts at the lab's development `/test` route verify identity, focus, binding
+updates, repeated placements, exact raster parity, font ownership, Strict Mode,
+error recovery and cleanup. Export serialization is on demand; live DOM updates
+do not produce a shadow SVG string.
 
 The source findings below describe the starting implementation before these changes.
 
