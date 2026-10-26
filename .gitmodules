@@ -37,3 +37,6 @@
 [submodule "gum-jsx"]
 	path = gum-jsx
 	url = git@github.com:CompendiumLabs/gum-jsx
+[submodule "gum-jsx-gpu"]
+	path = gum-jsx-gpu
+	url = git@github.com:CompendiumLabs/gum-jsx-gpu

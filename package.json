@@ -14,7 +14,8 @@
     "gum-jsx-cli",
     "gum-jsx-edit",
     "gum-jsx-docs",
-    "gum-jsx-maps"
+    "gum-jsx-maps",
+    "gum-jsx-gpu"
   ],
   "scripts": {
     "build": "bun run --cwd gum-jsx-png build && bun run --cwd gum-jsx-mp4 build && bun run --cwd gum-jsx build && bun run --cwd gum-jsx-mark build",
